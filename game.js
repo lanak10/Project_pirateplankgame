@@ -1,85 +1,83 @@
 const pirateTerms = [
-    "ahoy",
-    "adventure",
-    "anchor",
-    "attack",
-    "bounty",
-    "prisoner",
-    "captain",
-    "cannon",
-    "capture",
-    "compass",
-    "eyepatch",
-    "gunpowder",
-    "galley",
-    "jewels",
-    "treasure",
-    "masthead",
-    "shipmate",
-    "floorboards",
-    "lookout"
+  "ahoy",
+  "adventure",
+  "anchor",
+  "attack",
+  "bounty",
+  "prisoner",
+  "captain",
+  "cannon",
+  "capture",
+  "compass",
+  "eyepatch",
+  "gunpowder",
+  "galley",
+  "jewels",
+  "treasure",
+  "masthead",
+  "shipmate",
+  "floorboards",
+  "lookout"
 ]
 
 const resetbtn = document.getElementById('reset');
+const newroundbtn = document.getElementById('newRound')
 
 let answer = " ";
 let answerArray = []; // new array for guessed answers
-let maxWrong = 7;
+let maxWrong = 5;
 let mistakes = 0;
 // let wordStatus = null;
 
 // Pick a random word from the pirateTerms array
 function randomWord() {
-    answer = pirateTerms[Math.floor(Math.random() * pirateTerms.length)]
+  answer = pirateTerms[Math.floor(Math.random() * pirateTerms.length)]
 }
 randomWord();
 
 // Generate alphabet keyboard
 function generateButtons() {
-    let btnAlphabet = 'abcdefghijklmnopqrstuvwxyz'.split('').map(letter =>
-        `
-        <button
-          class="btn-primary"
-          id='` + letter + `'
-          onClick="handleGuess('` + letter + `')"
-        >
-          ` + letter + `
-        </button>
-      `).join('');
+  let btnAlphabet = 'abcdefghijklmnopqrstuvwxyz'.split('').map(letter =>
+    `
+      <button
+        class="btn-primary"
+        id='` + letter + `'
+        onClick="handleGuess('` + letter + `')"
+      >
+        ` + letter + `
+      </button>
+    `).join('');
 
-    document.getElementById('alphabetKeyboard').innerHTML = btnAlphabet;
+  document.getElementById('alphabetKeyboard').innerHTML = btnAlphabet;
 }
 generateButtons();
 
 /* for (let i = 0; i < landmarks.length; i++){
-    answerArray[i] = "_";
+  answerArray[i] = "_";
 } */
 
 // Shows the # of letters in randomly generated word using underscores
 function guessedWord() {
-    wordStatus = answer.split('').map(letter => (answerArray.indexOf(letter) >= 0 ? letter : " _ ")).join('');
+  wordStatus = answer.split('').map(letter => (answerArray.indexOf(letter) >= 0 ? letter : " _ ")).join('');
 
-
-    document.getElementById('randomWord').innerText = wordStatus;
+  document.getElementById('randomWord').innerText = wordStatus;
 }
-guessedWord(); // if this is commented out, word underscored disappears
-
-wordStatus2 = answer.split('').map(letter => (answerArray.indexOf(letter) >= 0 ? letter : " _ ")).join('');
+guessedWord(); // if this is commented out, word underscores disappear
 
 // Clicked letters show up/push into randomly generated word
 function handleGuess(clickedLetter) {
   answerArray.indexOf('clickedLetter') === -1 ? answerArray.push(clickedLetter) : null;
-  document.getElementById(clickedLetter).setAttribute('disabled', true); // disables clickedLetter so you can't click on it more than once
+  document.getElementById(clickedLetter).setAttribute('disabled', true); // disables clicked button so you can't click on it more than once
 
   alert(answer)
 
-  if(answer.indexOf(clickedLetter) >= 0) {
+  if (answer.indexOf(clickedLetter) >= 0) {
     guessedWord();
     increaseScoreboard(); // how to alternate between P1 and P2?
     gameWon();
     // increase mistake count by 1 if clickedLetter doesn't exist in the word
   } else if (answer.indexOf(clickedLetter) === -1) {
-    mistakes += 1; 
+    mistakes += 1;
     increaseMistakes();
     gameLost();
   }
@@ -98,19 +96,31 @@ function increaseMistakes() {
 }
 
 function gameWon() {
-  if(wordStatus === answer) { // Or if player gets 10 points?
+  if (wordStatus === answer) { // Or if player gets 10 points?
     document.getElementById('winlosetext').innerText = "Congrats you won! You saved the prisoner's life!"
   }
 }
 
 function gameLost() {
-  if(mistakes === maxWrong) {
+  if (mistakes === maxWrong) {
     document.getElementById('randomWord').innerText = "The answer was " + answer;
     document.getElementById('winlosetext').innerText = "Oh no!! You lost and the prisoner jumped off the plank into a pool of sharks"
   }
 }
 
+// Reset game using reset button
 function resetGame() {
+  mistakes = 0;
+  answerArray = [];
+  // randomWord(); // commenting out allows player 2 to attempt the same word
+  guessedWord();
+  increaseMistakes();
+  generateButtons();
+  document.getElementById('winlosetext').innerText = ''; // reset winlosetext
+}
+resetbtn.addEventListener('click', resetGame);
+
+function newRound() {
   mistakes = 0;
   answerArray = [];
   randomWord();
@@ -119,7 +129,7 @@ function resetGame() {
   generateButtons();
   document.getElementById('winlosetext').innerText = ''; // reset winlosetext
 }
-resetbtn.addEventListener('click', resetGame);
+newroundbtn.addEventListener('click', newRound);
 
-// Shows maximum # of wrong guesses
-document.getElementById('maxWrong').innerText = maxWrong
+// Shows maximum # of wrong guesses - only showing up for 1st matching element
+// document.getElementById('maxWrong').innerText = maxWrong
