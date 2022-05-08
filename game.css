@@ -1,13 +1,14 @@
 * {
     font-family: 'Staatliches', monospace;
-    
-} 
+
+}
 
 body {
     background-image: url("images/pirate-plank.png");
     background-size: cover;
     height: 100vh;
     background-repeat: no-repeat;
+    /* display: grid; */
 }
 
 #reset {
@@ -38,6 +39,7 @@ body {
     justify-content: space-around;
     align-items: center;
 }
+
 .mainContainer {
     display: flex;
     flex-direction: column;
@@ -47,11 +49,21 @@ body {
 #plank {
     z-index: 1;
     height: 600px;
-    position: absolute;
+    /* position: relative; */
+    display: grid;
+    grid-row: 1;
+    grid-column: 7;
 }
 
 #prisoner {
     z-index: 2;
     height: 300px;
-    position: relative;
+    /* position: absolute; */
+    display: flex;
+
+}
+
+.newClass {
+    font-style: underline;
+    color: blueviolet;
 }
