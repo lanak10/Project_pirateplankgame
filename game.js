@@ -2,7 +2,9 @@ const pirateTerms = [
   "ahoy",
   "adventure",
   "anchor",
+  "sail",
   "attack",
+  "port",
   "bounty",
   "prisoner",
   "captain",
@@ -16,12 +18,13 @@ const pirateTerms = [
   "treasure",
   "masthead",
   "shipmate",
+  "starboard",
   "floorboards",
   "lookout"
 ]
 
 const resetbtn = document.getElementById('reset');
-const newroundbtn = document.getElementById('newRound')
+const newroundbtn = document.getElementById('newRound');const newGamebtn = document.getElementById('newGame');
 
 let answer = " ";
 let answerArray = []; // new array for guessed answers
@@ -54,9 +57,9 @@ function generateButtons() {
 }
 generateButtons();
 
-/* for (let i = 0; i < landmarks.length; i++){
-  answerArray[i] = "_";
-} */
+document.getElementById('alphabetKeyboard').style.fontSize = "xx-large"
+
+
 
 // Shows the # of letters in randomly generated word using underscores
 function guessWord() {
@@ -99,16 +102,110 @@ const increaseScoreboard = () => {
 
 
 function swapPlayer() {
-  document.querySelector(`.wrongScore${player1}`).classList.remove('newClass');
+  document.querySelector(`.wrongScore${player1}`).classList.remove('newClass'); // shows whose turn it is using newClass CSS
   mistakes = 0;
   if (player1 < 2) {
     player1++;
   } else {
     player1--;
   }
-  document.querySelector(`.wrongScore${player1}`).classList.add('newClass');
+  document.querySelector(`.wrongScore${player1}`).classList.add('newClass'); // shows whose turn it is using newClass CSS
 }
 
+
+function increaseMistakes() {
+  document.querySelector(`#mistakes${player1}`).innerText = mistakes;
+  movePrisonerLeft()
+}
+
+function winRound() {
+  if (wordStatus === answer) {
+    document.getElementById('winlosetext').innerText = "Congrats you won this round!"
+  }
+}
+
+// change so winner = get 3 full words right? (aka after 3 * new round) && maxWrong < 5
+function gameWon() {
+  if (document.getElementById('p1-score-counter').innerText == 5) {
+    document.getElementById('winlosetext').innerText = "Player 1, You win! You saved the prisoner's life!";
+    // resetScoreboard();
+  } else if (document.getElementById('p2-score-counter').innerText == 5) {
+    document.getElementById('winlosetext').innerText = "Player 2, You win! You saved the prisoner's life!";
+    // resetScoreboard();
+  } 
+}
+
+// if Player 1 or Player 2 wins, new game button should return scoreboard to 0
+function completeReset() {
+  mistakes = 0;
+  player1 = 2;
+  document.querySelector(`#mistakes${player1}`).innerText = mistakes;
+  resetGame();
+  resetScoreboard();
+  document.querySelector(`#mistakes${player1}`).innerText = mistakes;
+}
+
+function resetScoreboard() {
+  document.getElementById('p1-score-counter').innerText = '0';
+  document.getElementById('p2-score-counter').innerText = '0';
+}
+newGamebtn.addEventListener('click', completeReset);
+
+
+
+function gameLost() {
+  if (mistakes === maxWrong) {
+    document.getElementById('randomWord').innerText = "The answer was " + answer;
+    document.getElementById('winlosetext').innerText = "Oh no!! You lost and the prisoner jumped off the plank into a pool of sharks"
+
+  }
+}
+
+// Reset game using reset button
+function resetGame() {
+  answerArray = [];
+  // randomWord(); // commenting out allows player 2 to attempt the same word
+  guessWord();
+  increaseMistakes();
+  mistakes = 0;
+  generateButtons();
+  document.getElementById('winlosetext').innerText = ''; // reset winlosetext
+  swapPlayer();
+  increaseMistakes(); // refresh current player's display
+}
+resetbtn.addEventListener('click', resetGame);
+
+
+// New round of game using new round button
+function newRound() {
+  answerArray = [];
+  randomWord();
+  guessWord();
+  mistakes = 0;
+  increaseMistakes(); // displays mistakes
+  generateButtons();
+  document.getElementById('winlosetext').innerText = ''; // reset winlosetext
+}
+newroundbtn.addEventListener('click', newRound);
+
+
+const prisonerImg = document.getElementById('prisoner')
+
+function movePrisonerLeft() {
+  prisonerImg.style.right = `${10 * mistakes + 35}%`;
+}
+
+
+/* Position of Prisoner
+35% - 0 mistakes (start)
+45% - 1 
+55% - 2
+65% - 3
+75% - 4
+85% - 5 mistakes */
+
+
+// ===== EXTRA STUFF ATTEMPTED ===== //
 // HOW TO INCORPORATE PLAYER 2??? 
 /* const p2_increaseScoreboard = () => {
   const score = document.querySelector('#p2-score-counter').innerText;
@@ -128,66 +225,6 @@ function swapPlayer() {
   }
 } */
 
-function increaseMistakes() {
-  document.querySelector(`#mistakes${player1}`).innerText = mistakes;
-}
-
-function winRound() {
-  if (wordStatus === answer) {
-    document.getElementById('winlosetext').innerText = "Congrats you won this round!"
-  }
-}
-
-function gameWon() {
-  if (document.getElementById('p1-score-counter').innerText == 10) {
-    document.getElementById('winlosetext').innerText = "Player 1, You win! You saved the prisoner's life!"
-  } else if (document.getElementById('p2-score-counter').innerText == 10) {
-    document.getElementById('winlosetext').innerText = "Player 2, You win! You saved the prisoner's life!"
-  }
-}
-
-function gameLost() {
-  if (mistakes === maxWrong) {
-    document.getElementById('randomWord').innerText = "The answer was " + answer;
-    document.getElementById('winlosetext').innerText = "Oh no!! You lost and the prisoner jumped off the plank into a pool of sharks"
-
-  }
-}
-
-// Reset game using reset button
-function resetGame() {
-  mistakes = 0;
-  answerArray = [];
-  // randomWord(); // commenting out allows player 2 to attempt the same word
-  guessWord();
-  increaseMistakes();
-  generateButtons();
-  document.getElementById('winlosetext').innerText = ''; // reset winlosetext
-  swapPlayer()
-}
-resetbtn.addEventListener('click', resetGame);
-
-// New round of game
-function newRound() {
-  mistakes = 0;
-  answerArray = [];
-  randomWord();
-  guessWord();
-  increaseMistakes();
-  generateButtons();
-  document.getElementById('winlosetext').innerText = ''; // reset winlosetext
-}
-newroundbtn.addEventListener('click', newRound);
-
-/* function toggle(event) {
-  player1 ? increaseScoreboard() : p2_increaseScoreboard()
+/* for (let i = 0; i < pirateTerms.length; i++){
+  answerArray[i] = "_";
 } */
-
-// Shows maximum # of wrong guesses - only showing up for 1st matching element
-// document.getElementById('maxWrong').innerText = maxWrong
-
-
-const prisonerImg = document.getElementById('prisoner')
-while (i < maxWrong) {
-  prisonerImg
-}

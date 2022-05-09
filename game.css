@@ -1,6 +1,6 @@
 * {
     font-family: 'Staatliches', monospace;
-
+    
 }
 
 body {
@@ -11,11 +11,19 @@ body {
     /* display: grid; */
 }
 
+#main-intro {
+    background-color: rgb(229, 246, 246);
+}
+
 #reset {
     font-size: large;
 }
 
 #newRound {
+    font-size: large;
+}
+
+#newGame {
     font-size: large;
 }
 
@@ -48,22 +56,26 @@ body {
 
 #plank {
     z-index: 1;
-    height: 600px;
-    /* position: relative; */
-    display: grid;
+    position: relative;
+    display: grid; 
     grid-row: 1;
-    grid-column: 7;
+    grid-column: 7; 
 }
 
 #prisoner {
     z-index: 2;
-    height: 300px;
-    /* position: absolute; */
+    height: 250px;
+    position: fixed; /* or absolute? */
     display: flex;
-
+    right: 35%;
 }
 
 .newClass {
-    font-style: underline;
-    color: blueviolet;
+    /* font-style: underline; */
+    color: darkblue;
+    background-color: cornsilk;
+}
+
+h1 {
+    margin-bottom: 0px;
 }

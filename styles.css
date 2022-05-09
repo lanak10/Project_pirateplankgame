@@ -1,6 +1,6 @@
 * {
     font-family: 'Staatliches', monospace;
-    
+      
 } 
 
 body {
@@ -12,6 +12,7 @@ body {
 
 h1 {
     font-size: 5em;
+    background-color: rgb(229, 246, 246);
 }
 
 h2 {
