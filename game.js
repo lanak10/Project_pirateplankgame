@@ -1,24 +1,33 @@
 const pirateTerms = [
   "ahoy",
+  "parrot",
   "adventure",
   "anchor",
   "sail",
+  "plank",
   "attack",
+  "telescope",
   "port",
   "bounty",
   "prisoner",
   "captain",
   "cannon",
+  "nautical",
+  "coins",
+  "pegleg",
   "capture",
+  "sword",
   "compass",
+  "loot",
   "eyepatch",
   "gunpowder",
   "galley",
   "jewels",
+  "conquest",
   "treasure",
   "masthead",
   "shipmate",
-  "starboard",
+  "overboard",
   "floorboards",
   "lookout"
 ]
@@ -32,7 +41,7 @@ let maxWrong = 5;
 let mistakes = 0;
 let wordStatus = null;
 let player1 = 1;
-// const score = document.querySelector(`#p${player1}-score-counter`).innerText;
+
 
 // Pick a random word from the pirateTerms array
 function randomWord() {
@@ -75,17 +84,17 @@ function handleGuess(clickedLetter) {
   answerArray.indexOf('clickedLetter') === -1 ? answerArray.push(clickedLetter) : null;
   document.getElementById(clickedLetter).setAttribute('disabled', true); // disables clicked button so you can't click on it more than once
 
-  alert(answer) // === delete later ====
+  // alert(answer) // === delete later ====
 
   if (answer.indexOf(clickedLetter) >= 0) {
     guessWord();
-    increaseScoreboard();// how to alternate between P1 and P2?
+    increaseScoreboard();
     winRound();
     gameWon();
     // increase mistake count by 1 if clickedLetter doesn't exist in the word
   } else if (answer.indexOf(clickedLetter) === -1) {
     mistakes += 1;
-    increaseMistakes();
+    displayMistakes();
     gameLost();
   }
 }
@@ -113,7 +122,7 @@ function swapPlayer() {
 }
 
 
-function increaseMistakes() {
+function displayMistakes() {
   document.querySelector(`#mistakes${player1}`).innerText = mistakes;
   movePrisonerLeft()
 }
@@ -124,12 +133,12 @@ function winRound() {
   }
 }
 
-// change so winner = get 3 full words right? (aka after 3 * new round) && maxWrong < 5
+
 function gameWon() {
-  if (document.getElementById('p1-score-counter').innerText == 5) {
+  if (document.getElementById('p1-score-counter').innerText == 15) {
     document.getElementById('winlosetext').innerText = "Player 1, You win! You saved the prisoner's life!";
     // resetScoreboard();
-  } else if (document.getElementById('p2-score-counter').innerText == 5) {
+  } else if (document.getElementById('p2-score-counter').innerText == 15) {
     document.getElementById('winlosetext').innerText = "Player 2, You win! You saved the prisoner's life!";
     // resetScoreboard();
   } 
@@ -166,29 +175,29 @@ function resetGame() {
   answerArray = [];
   // randomWord(); // commenting out allows player 2 to attempt the same word
   guessWord();
-  increaseMistakes();
+  displayMistakes();
   mistakes = 0;
   generateButtons();
-  document.getElementById('winlosetext').innerText = ''; // reset winlosetext
+  document.getElementById('winlosetext').innerText = ''; 
   swapPlayer();
-  increaseMistakes(); // refresh current player's display
+  displayMistakes(); // refresh current player's display
 }
 resetbtn.addEventListener('click', resetGame);
 
 
-// New round of game using new round button
+// New round using new word button
 function newRound() {
   answerArray = [];
   randomWord();
   guessWord();
   mistakes = 0;
-  increaseMistakes(); // displays mistakes
+  displayMistakes(); 
   generateButtons();
-  document.getElementById('winlosetext').innerText = ''; // reset winlosetext
+  document.getElementById('winlosetext').innerText = ''; 
 }
 newroundbtn.addEventListener('click', newRound);
 
-
+// Moving the prisoner left on the plank
 const prisonerImg = document.getElementById('prisoner')
 
 function movePrisonerLeft() {
@@ -202,7 +211,7 @@ function movePrisonerLeft() {
 55% - 2
 65% - 3
 75% - 4
-85% - 5 mistakes */
+85% - 5 mistakes (edge of plank) */
 
 
 // ===== EXTRA STUFF ATTEMPTED ===== //

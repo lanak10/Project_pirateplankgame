@@ -13,6 +13,11 @@ body {
 
 #main-intro {
     background-color: rgb(229, 246, 246);
+    font-size: large;
+}
+
+#randomWord {
+    font-size: larger;
 }
 
 #reset {
